@@ -11,6 +11,7 @@ export const fetcher = async <T>(
     endpoint: string,
     options: FetcherOptions = {}
 ): Promise<T> => {
+
     const { tags, revalidate, headers, ...customConfig } = options;
 
     // get Access Token from Cookie (Server Side Compatible)

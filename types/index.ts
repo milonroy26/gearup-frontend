@@ -21,6 +21,11 @@ export interface IGearItem {
     isAvailable: boolean;
     providerId: string;
     categoryId: string;
+    category?: {
+        id: string;
+        name: string;
+        createdAt?: string;
+    };
     createdAt?: string;
     updatedAt?: string;
 }

@@ -1,4 +1,5 @@
 import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
 import { ThemeProvider } from "@/components/shared/ThemeProvider";
 import { AuthProvider } from "@/features/auth/hooks/useAuth";
 import { AuthUser } from "@/features/auth/types/auth.type";
@@ -77,6 +78,7 @@ export default async function RootLayout({
             <main className="flex-1">
               {children}
             </main>
+            <Footer />
           </AuthProvider>
         </ThemeProvider>
       </body>

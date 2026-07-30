@@ -1,12 +1,24 @@
-import { Button } from "@/components/ui/button"
+import Category from "@/features/home/components/Category";
+import CTA from "@/features/home/components/CTA";
+import Hero from "@/features/home/components/Hero";
+import HowItWork from "@/features/home/components/HowItWork";
 
-const page = () => {
+const CATEGORIES = [
+    { label: "Cricket", tag: "01" },
+    { label: "Football", tag: "02" },
+    { label: "Cycling", tag: "03" },
+    { label: "Camping & Hiking", tag: "04" },
+    { label: "Fitness & Gym", tag: "05" },
+    { label: "Swimming", tag: "06" },
+];
+
+export default function HomePage() {
     return (
-        <div>
-            <h1>Milon</h1>
-            <Button>Button</Button>
+        <div className="flex min-h-screen flex-col">
+            <Hero />
+            <Category categories={CATEGORIES} />
+            <HowItWork />
+            <CTA />
         </div>
-    )
+    );
 }
-
-export default page

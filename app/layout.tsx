@@ -1,5 +1,5 @@
-import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
+import Navbar from "@/components/shared/Navbar";
 import { ThemeProvider } from "@/components/shared/ThemeProvider";
 import { AuthProvider } from "@/features/auth/hooks/useAuth";
 import { AuthUser } from "@/features/auth/types/auth.type";

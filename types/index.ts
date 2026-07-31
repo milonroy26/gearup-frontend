@@ -30,6 +30,13 @@ export interface IGearItem {
     updatedAt?: string;
 }
 
+export interface ICategory {
+    id: string;
+    name: string;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
 // Order Status Enum
 export type OrderStatus =
     | "PLACED"

@@ -3,7 +3,7 @@
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import { UserRole } from "@/types";
-import { ClipboardList, Gauge, PackageSearch, Shield, Store } from "lucide-react";
+import { ClipboardList, Gauge, PackagePlus, PackageSearch, Shield, Store } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -15,6 +15,8 @@ const roleNav: Record<UserRole, { label: string; href: string; icon: typeof Gaug
     ],
     PROVIDER: [
         { label: "Provider Home", href: "/dashboard/provider", icon: Store },
+        { label: "Incoming Orders", href: "/dashboard/provider/orders", icon: ClipboardList },
+        { label: "Add Gear", href: "/dashboard/provider/gear/new", icon: PackagePlus },
         { label: "Browse Gear", href: "/gear", icon: PackageSearch },
     ],
     ADMIN: [

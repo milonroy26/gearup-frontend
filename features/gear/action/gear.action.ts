@@ -2,7 +2,7 @@
 "use server"
 
 import { fetcher } from "@/lib/fetcher";
-import { IApiResponse, IGearItem } from "@/types";
+import { IApiResponse, ICategory, IGearItem } from "@/types";
 
 interface IGetGearsQueryParams {
     minPrice?: string;
@@ -58,6 +58,22 @@ export const getSingleGear = async (gearId: string) => {
             success: false,
             message: error.message || "Failed to fetch gear details",
             data: null,
+        };
+    }
+};
+
+//* GET ALL CATEGORIES
+export const getAllCategories = async () => {
+    try {
+        return await fetcher<IApiResponse<ICategory[]>>("/categories", {
+            revalidate: 300,
+            tags: ["categories-list"],
+        });
+    } catch (error: any) {
+        return {
+            success: false,
+            message: error.message || "Failed to fetch categories",
+            data: [],
         };
     }
 };

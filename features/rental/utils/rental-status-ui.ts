@@ -26,6 +26,7 @@ export const rentalStatusUi: Record<OrderStatus, RentalStatusUi> = {
     PICKED_UP: {
         label: "Picked Up",
         badgeClassName: "bg-emerald-500/10 text-emerald-700 ring-1 ring-emerald-500/20 dark:text-emerald-300",
+        providerAction: "Mark Returned",
     },
     RETURNED: {
         label: "Returned",

@@ -1,11 +1,14 @@
 // User & Auth Types
 export type UserRole = "CUSTOMER" | "PROVIDER" | "ADMIN";
+export type UserStatus = "ACTIVE" | "SUSPENDED";
 
 export interface IUser {
     id: string;
     name: string;
     email: string;
     role: UserRole;
+    status?: UserStatus;
+    isDeleted?: boolean;
     createdAt?: string;
     updatedAt?: string;
 }
@@ -54,6 +57,8 @@ export interface IRentalOrder {
     totalPrice: number;
     status: OrderStatus;
     customerId: string;
+    customer?: IUser;
+    provider?: IUser;
     createdAt?: string;
     updatedAt?: string;
     orderItems?: IOrderItem[];
@@ -73,4 +78,13 @@ export interface IApiResponse<T> {
     statusCode: number;
     message: string;
     data: T;
+    meta?: IPaginationMeta;
+}
+
+export interface IPaginationMeta {
+    page?: number;
+    limit?: number;
+    total?: number;
+    totalPage?: number;
+    totalPages?: number;
 }

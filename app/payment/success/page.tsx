@@ -12,12 +12,22 @@ function getParam(searchParams: Record<string, string | string[] | undefined>, k
     return Array.isArray(value) ? value[0] : value;
 }
 
+function getFirstParam(searchParams: Record<string, string | string[] | undefined>, keys: string[]) {
+    for (const key of keys) {
+        const value = getParam(searchParams, key);
+
+        if (value) {
+            return value;
+        }
+    }
+}
+
 export default async function PaymentSuccessPage({ searchParams }: PaymentSuccessPageProps) {
     const params = await searchParams;
     const paymentDetails = [
-        { label: "Transaction ID", value: getParam(params, "tran_id") },
+        { label: "Transaction ID", value: getFirstParam(params, ["tranId", "tran_id"]) },
         { label: "Validation ID", value: getParam(params, "val_id") },
-        { label: "Order ID", value: getParam(params, "rentalOrderId") || getParam(params, "orderId") },
+        { label: "Order ID", value: getFirstParam(params, ["rentalOrderId", "orderId"]) },
         { label: "Amount", value: getParam(params, "amount") },
         { label: "Status", value: getParam(params, "status") },
     ].filter((item) => item.value);

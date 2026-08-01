@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import PaymentButton from "@/features/payment/components/PaymentButton";
 import { getMyOrders } from "@/features/rental/actions/rental.action";
 import { getRentalOrderAction, getRentalStatusUi } from "@/features/rental/utils/rental-status-ui";
 import { cn } from "@/lib/utils";
@@ -71,15 +72,10 @@ export default async function CustomerOrdersPage() {
                                                     </span>
                                                 </TableCell>
                                                 <TableCell>
-                                                    {customerAction ? (
-                                                        <Button
-                                                            type="button"
-                                                            variant={order.status === "CONFIRMED" ? "flag" : "outline"}
-                                                            size="sm"
-                                                            disabled
-                                                            className="rounded-md"
-                                                            title="Action endpoint is not connected yet"
-                                                        >
+                                                    {order.status === "CONFIRMED" ? (
+                                                        <PaymentButton rentalOrderId={order.id} />
+                                                    ) : customerAction ? (
+                                                        <Button type="button" variant="outline" size="sm" disabled className="rounded-md">
                                                             {customerAction}
                                                         </Button>
                                                     ) : (

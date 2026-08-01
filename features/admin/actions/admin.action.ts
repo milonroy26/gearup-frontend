@@ -4,46 +4,9 @@
 import { fetcher } from "@/lib/fetcher";
 import { IApiResponse, IGearItem, IPaginationMeta, IRentalOrder, IUser, OrderStatus, UserRole, UserStatus } from "@/types";
 import { revalidateTag } from "next/cache";
+import { IAdminListQuery, IAdminRentalsQuery, IAdminUsersQuery, IDashboardMetrics, IPaginatedData } from "../types/admin.type";
 
-export interface IDashboardMetrics {
-    summary: {
-        totalUsers?: number;
-        totalCustomers: number;
-        activeGear?: number;
-        totalProducts: number;
-        totalRentals?: number;
-        totalOrders: number;
-        totalRevenue?: number;
-    };
-    recentTransactions: Array<{
-        id: string;
-        transactionId: string;
-        amount: number;
-        method: string;
-        status: string;
-        createdAt: string;
-    }>;
-}
 
-export interface IPaginatedData<T> {
-    items: T[];
-    meta: IPaginationMeta;
-}
-
-export interface IAdminListQuery {
-    page?: number;
-    limit?: number;
-    search?: string;
-}
-
-export interface IAdminUsersQuery extends IAdminListQuery {
-    role?: UserRole;
-    status?: UserStatus;
-}
-
-export interface IAdminRentalsQuery extends IAdminListQuery {
-    status?: OrderStatus;
-}
 
 const USER_ROLES: UserRole[] = ["CUSTOMER", "PROVIDER", "ADMIN"];
 const USER_STATUSES: UserStatus[] = ["ACTIVE", "SUSPENDED"];
@@ -82,7 +45,7 @@ export const getAdminDashboardMetrics = async () => {
     }
 };
 
-// Get All Users
+//* Get All Users
 export const getAllUsers = async (query?: IAdminUsersQuery) => {
     try {
         const params = appendListQuery(query);
@@ -108,7 +71,7 @@ export const getAllUsers = async (query?: IAdminUsersQuery) => {
     }
 };
 
-// Suspend or Activate User
+//* Suspend or Activate User
 export const toggleUserStatus = async (userId: string, status: UserStatus) => {
     try {
         const res = await fetcher<IApiResponse<IUser>>(`/admin/users/${userId}`, {
@@ -131,7 +94,7 @@ export const toggleUserStatus = async (userId: string, status: UserStatus) => {
     }
 };
 
-// Fetch All Gears for Admin Content Moderation
+//* Fetch All Gears for Admin Content Moderation
 export const getAdminAllGears = async () => {
     try {
         return await fetcher<IApiResponse<IGearItem[]>>("/gear", {
@@ -147,7 +110,7 @@ export const getAdminAllGears = async () => {
     }
 };
 
-// Fetch All Rental Orders for Admin Content Moderation
+//* Fetch All Rental Orders for Admin Content Moderation
 export const getAdminAllRentals = async (query?: IAdminRentalsQuery) => {
     try {
         const params = appendListQuery(query);

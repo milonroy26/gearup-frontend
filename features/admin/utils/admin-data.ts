@@ -1,5 +1,5 @@
 import { IApiResponse, IPaginationMeta } from "@/types";
-import type { IPaginatedData } from "../actions/admin.action";
+import { IPaginatedData } from "../types/admin.type";
 
 export type AdminListResponse<T> = IApiResponse<T[] | IPaginatedData<T> | { data?: T[]; meta?: IPaginationMeta }>;
 

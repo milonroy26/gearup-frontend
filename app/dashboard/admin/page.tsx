@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAdminDashboardMetrics } from "@/features/admin/actions/admin.action";
-import { ClipboardList, PackageSearch, ShieldCheck, Users, WalletCards } from "lucide-react";
+import { ClipboardList, PackageSearch, Users, WalletCards } from "lucide-react";
 import Link from "next/link";
 
 function formatCurrency(value?: number) {
@@ -89,16 +89,6 @@ export default async function AdminDashboardPage() {
                             );
                         })}
                     </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between">
-                        <div>
-                            <CardTitle>Moderation status</CardTitle>
-                            <CardDescription>Admin API routes are connected to the platform backend.</CardDescription>
-                        </div>
-                        <ShieldCheck className="size-5 text-emerald-600 dark:text-emerald-300" strokeWidth={1.8} />
-                    </CardHeader>
                 </Card>
             </div>
         </section>

@@ -47,7 +47,7 @@ const Hero = () => {
                                 <p className="text-xs uppercase text-emerald-100/80">Featured kit</p>
                                 <h2 className="mt-2 font-heading text-3xl font-bold">Weekend Cricket Set</h2>
                             </div>
-                            <div className="rounded-md bg-emerald-300 px-3 py-2 text-sm font-bold text-emerald-950">$12/day</div>
+                            <div className="rounded-md bg-emerald-300 px-3 py-2 text-sm font-bold text-emerald-950">💳50/day</div>
                         </div>
                         <div className="mt-8 grid grid-cols-[1fr_0.7fr] gap-4">
                             <div className="min-h-48 rounded-md bg-[linear-gradient(160deg,#d9f99d,#34d399_54%,#0f766e)] p-4">

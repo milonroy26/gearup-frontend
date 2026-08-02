@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 type Category = {
-    label: string;
-    tag: string;
+    id: string;
+    name: string;
 };
 
 const Category = ({ categories }: { categories: Category[] }) => {
@@ -16,12 +16,12 @@ const Category = ({ categories }: { categories: Category[] }) => {
                 <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
                     {categories.map((c) => (
                         <Link
-                            key={c.label}
-                            href={`/gear?category=${c.label.split(" ")[0].toUpperCase()}`}
+                            key={c.id}
+                            href={`/gear?category=${c.name.split(" ")[0].toUpperCase()}`}
                             className="rounded-md border border-border bg-card p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-500/50 hover:shadow-md"
                         >
-                            <span className="text-xs font-semibold text-muted-foreground">{c.tag}</span>
-                            <p className="mt-2 text-sm font-semibold text-card-foreground">{c.label}</p>
+                            <span className="text-xs font-semibold text-muted-foreground">{c.name}</span>
+                            <p className="mt-2 text-sm font-semibold text-card-foreground">{c.name}</p>
                         </Link>
                     ))}
                 </div>

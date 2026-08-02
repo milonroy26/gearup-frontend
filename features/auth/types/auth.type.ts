@@ -11,5 +11,6 @@ export interface AuthContextValue {
     user: AuthUser | null;
     isAuthenticated: boolean;
     isLoading: boolean;
+    syncUserFromToken: (accessToken: string) => void;
     logout: () => Promise<void>;
 }

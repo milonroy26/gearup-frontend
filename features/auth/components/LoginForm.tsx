@@ -2,6 +2,7 @@
 "use client";
 
 import { loginUser } from "@/features/auth/actions/auth.action";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { loginSchema, type ILoginInput } from "@/features/auth/schemas/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { jwtDecode } from "jwt-decode";
@@ -17,6 +18,7 @@ interface DecodedToken {
 
 export default function LoginForm() {
     const router = useRouter();
+    const { syncUserFromToken } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
 
     const {
@@ -39,10 +41,14 @@ export default function LoginForm() {
                 const decoded = jwtDecode<DecodedToken>(res.data.accessToken);
                 const role = decoded.role;
 
-                if (role === "CUSTOMER") router.push("/dashboard/customer");
-                else if (role === "PROVIDER") router.push("/dashboard/provider");
-                else if (role === "ADMIN") router.push("/dashboard/admin");
-                else router.push("/");
+                syncUserFromToken(res.data.accessToken);
+
+                if (role === "CUSTOMER") router.replace("/dashboard/customer");
+                else if (role === "PROVIDER") router.replace("/dashboard/provider");
+                else if (role === "ADMIN") router.replace("/dashboard/admin");
+                else router.replace("/");
+
+                router.refresh();
             } else {
                 toast.error(res.message || "Invalid email or password");
             }

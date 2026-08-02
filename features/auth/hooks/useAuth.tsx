@@ -1,20 +1,29 @@
 "use client";
 
 import { logoutUser } from "@/features/auth/actions/auth.action";
+import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import {
     createContext,
     useCallback,
     useContext,
+    useEffect,
     useMemo,
+    startTransition,
     useState,
     type ReactNode,
 } from "react";
 import { AuthContextValue, AuthUser } from "../types/auth.type";
 
+type DecodedAuthToken = Partial<AuthUser>;
+
 
 
 const AuthContext = createContext<AuthContextValue | null>(null);
+
+function getDisplayName(decoded: DecodedAuthToken) {
+    return decoded.name || decoded.email || decoded.role || "Member";
+}
 
 //* Provider
 export function AuthProvider({
@@ -27,6 +36,28 @@ export function AuthProvider({
     const router = useRouter();
     const [user, setUser] = useState<AuthUser | null>(initialUser);
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        startTransition(() => {
+            setUser(initialUser);
+        });
+    }, [initialUser]);
+
+    const syncUserFromToken = useCallback((accessToken: string) => {
+        const decoded = jwtDecode<DecodedAuthToken>(accessToken);
+
+        if (!decoded.role) {
+            setUser(null);
+            return;
+        }
+
+        setUser({
+            id: decoded.id,
+            name: getDisplayName(decoded),
+            email: decoded.email,
+            role: decoded.role,
+        });
+    }, []);
 
     const logout = useCallback(async () => {
         setIsLoading(true);
@@ -46,9 +77,10 @@ export function AuthProvider({
             user,
             isAuthenticated: Boolean(user),
             isLoading,
+            syncUserFromToken,
             logout,
         }),
-        [isLoading, logout, user]
+        [isLoading, logout, syncUserFromToken, user]
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

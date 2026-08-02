@@ -6,3 +6,9 @@ export interface ICreateRentalPayload {
         quantity: number;
     }[];
 }
+
+export interface ICreateReviewPayload {
+    gearItemId: string;
+    rating: string;
+    comment: string;
+}

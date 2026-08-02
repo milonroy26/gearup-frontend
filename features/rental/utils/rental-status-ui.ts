@@ -21,6 +21,7 @@ export const rentalStatusUi: Record<OrderStatus, RentalStatusUi> = {
     PAID: {
         label: "Paid",
         badgeClassName: "bg-purple-500/10 text-purple-700 ring-1 ring-purple-500/20 dark:text-purple-300",
+        customerAction: "Return & Review",
         providerAction: "Mark Picked Up",
     },
     PICKED_UP: {
@@ -31,7 +32,6 @@ export const rentalStatusUi: Record<OrderStatus, RentalStatusUi> = {
     RETURNED: {
         label: "Returned",
         badgeClassName: "bg-muted text-muted-foreground ring-1 ring-border",
-        customerAction: "Leave Review",
     },
     CANCELLED: {
         label: "Cancelled",

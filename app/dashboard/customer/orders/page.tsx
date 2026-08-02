@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import PaymentButton from "@/features/payment/components/PaymentButton";
 import { getMyOrders } from "@/features/rental/actions/rental.action";
+import CustomerReturnReviewAction from "@/features/rental/components/CustomerReturnReviewAction";
 import { getRentalOrderAction, getRentalStatusUi } from "@/features/rental/utils/rental-status-ui";
 import { cn } from "@/lib/utils";
 import { PackageSearch } from "lucide-react";
@@ -55,6 +56,7 @@ export default async function CustomerOrdersPage() {
                                 <TableBody>
                                     {orders.map((order) => {
                                         const gearTitle = order.orderItems?.[0]?.gearItem?.title || "Rental gear";
+                                        const gearItemId = order.orderItems?.[0]?.gearItemId;
                                         const statusUi = getRentalStatusUi(order.status);
                                         const customerAction = getRentalOrderAction(order.status, "CUSTOMER");
 
@@ -74,6 +76,8 @@ export default async function CustomerOrdersPage() {
                                                 <TableCell>
                                                     {order.status === "CONFIRMED" ? (
                                                         <PaymentButton rentalOrderId={order.id} />
+                                                    ) : order.status === "PAID" ? (
+                                                        <CustomerReturnReviewAction orderId={order.id} gearItemId={gearItemId} />
                                                     ) : customerAction ? (
                                                         <Button type="button" variant="outline" size="sm" disabled className="rounded-md">
                                                             {customerAction}

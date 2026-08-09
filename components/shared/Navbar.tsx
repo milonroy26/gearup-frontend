@@ -12,6 +12,7 @@ import { useState } from "react";
 const navItems = [
     { label: "Home", href: "/" },
     { label: "Browse Gear", href: "/gear" },
+    { label: "About", href: "/about" },
 ];
 
 const ROLE_HOME = {

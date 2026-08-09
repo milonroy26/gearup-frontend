@@ -7,6 +7,7 @@ interface GearPageProps {
         query?: string;
         minPrice?: string;
         maxPrice?: string;
+        categoryId?: string;
         sortBy?: string;
         sortOrder?: string;
     }>;
@@ -17,12 +18,18 @@ export default async function GearListingPage({ searchParams }: GearPageProps) {
     const res = await getAllGears({
         minPrice: query.minPrice,
         maxPrice: query.maxPrice,
+        categoryId: query.categoryId,
         sortBy: query.sortBy,
         sortOrder: query.sortOrder,
     });
 
     const searchQuery = query.query?.trim().toLowerCase();
+    const selectedCategoryId = query.categoryId?.trim();
     const gears = (res.data || []).filter((gear) => {
+        if (selectedCategoryId && gear.categoryId !== selectedCategoryId) {
+            return false;
+        }
+
         if (!searchQuery) {
             return true;
         }

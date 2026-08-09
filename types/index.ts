@@ -18,6 +18,11 @@ export interface IGearItem {
     id: string;
     title: string;
     description: string;
+    image?: string;
+    rating?: number | string;
+    averageRating?: number | string;
+    reviewCount?: number;
+    reviewsCount?: number;
     brand: string;
     pricePerDay: number;
     stock: number;

@@ -7,6 +7,7 @@ import { IApiResponse, ICategory, IGearItem } from "@/types";
 interface IGetGearsQueryParams {
     minPrice?: string;
     maxPrice?: string;
+    categoryId?: string;
     sortBy?: string;
     sortOrder?: string;
     page?: number;
@@ -21,6 +22,7 @@ export const getAllGears = async (queryParams?: IGetGearsQueryParams) => {
 
         if (queryParams?.minPrice) params.set("minPrice", queryParams.minPrice);
         if (queryParams?.maxPrice) params.set("maxPrice", queryParams.maxPrice);
+        if (queryParams?.categoryId) params.set("categoryId", queryParams.categoryId);
         if (queryParams?.sortBy) params.set("sortBy", queryParams.sortBy);
         if (queryParams?.sortOrder) params.set("sortOrder", queryParams.sortOrder);
         if (queryParams?.page) params.set("page", String(queryParams.page));

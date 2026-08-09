@@ -13,11 +13,11 @@ const Category = ({ categories }: { categories: Category[] }) => {
                 <h2 className="mb-8 max-w-2xl font-heading text-3xl font-bold text-foreground md:text-4xl">
                     Choose a category and find match-ready equipment fast.
                 </h2>
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-7">
                     {categories.map((c) => (
                         <Link
                             key={c.id}
-                            href={`/gear?category=${c.name.split(" ")[0].toUpperCase()}`}
+                            href={`/gear?categoryId=${c.id}`}
                             className="rounded-md border border-border bg-card p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-500/50 hover:shadow-md"
                         >
                             <span className="text-xs font-semibold text-muted-foreground">{c.name}</span>

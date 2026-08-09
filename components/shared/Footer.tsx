@@ -3,6 +3,7 @@ import Link from "next/link";
 
 const footerLinks = [
     { label: "Browse Gear", href: "/gear" },
+    { label: "About GearUp", href: "/about" },
     { label: "Become a Provider", href: "/register" },
     { label: "Login", href: "/login" },
 ];

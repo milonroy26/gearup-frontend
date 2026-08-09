@@ -1,10 +1,37 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CalendarCheck, MapPin, ShieldCheck, Star } from "lucide-react";
+import { IGearItem } from "@/types";
+import { ArrowRight, CalendarCheck, MapPin, PackageCheck, ShieldCheck, Star } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const stats = ["650+ items", "24h pickup", "Deposit safe"];
 
-const Hero = () => {
+function getRatingLabel(gear: IGearItem) {
+    const rawRating = gear.averageRating ?? gear.rating;
+    const rating = typeof rawRating === "number" ? rawRating : rawRating ? Number(rawRating) : null;
+
+    if (rating !== null && Number.isFinite(rating)) {
+        return `${Math.min(Math.max(rating, 0), 5).toFixed(1)} rating`;
+    }
+
+    return "New listing";
+}
+
+const Hero = ({ featuredGear }: { featuredGear?: IGearItem }) => {
+    const categoryName = featuredGear?.category?.name || "Gear";
+
+    const featureTiles = featuredGear
+        ? [
+            { icon: ShieldCheck, text: "Verified provider" },
+            { icon: CalendarCheck, text: `${featuredGear.stock} available` },
+            { icon: Star, text: getRatingLabel(featuredGear) },
+        ]
+        : [
+            { icon: ShieldCheck, text: "Verified providers" },
+            { icon: CalendarCheck, text: "Live availability" },
+            { icon: Star, text: "Reviews enabled" },
+        ];
+
     return (
         <section className="relative overflow-hidden border-b border-border bg-[linear-gradient(135deg,#f7fee7_0%,#ecfeff_48%,#fff7ed_100%)] dark:bg-[linear-gradient(135deg,#07130d_0%,#10211b_52%,#20180b_100%)]">
             <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-emerald-400/70 to-transparent" aria-hidden />
@@ -42,27 +69,48 @@ const Hero = () => {
 
                 <div className="rounded-lg border border-border/80 bg-card/85 p-4 shadow-2xl shadow-emerald-950/10 backdrop-blur dark:bg-card/70 dark:shadow-black/30">
                     <div className="rounded-md bg-[#123927] p-5 text-white">
-                        <div className="flex items-center justify-between gap-4">
-                            <div>
+                        <div className="flex items-start justify-between gap-4">
+                            <div className="min-w-0">
                                 <p className="text-xs uppercase text-emerald-100/80">Featured kit</p>
-                                <h2 className="mt-2 font-heading text-3xl font-bold">Weekend Cricket Set</h2>
+                                <h2 className="mt-2 line-clamp-2 font-heading text-3xl font-bold">
+                                    {featuredGear?.title || "Gear listings coming soon"}
+                                </h2>
                             </div>
-                            <div className="rounded-md bg-emerald-300 px-3 py-2 text-sm font-bold text-emerald-950">💳50/day</div>
+                            {featuredGear && (
+                                <div className="shrink-0 rounded-md bg-emerald-300 px-3 py-2 text-sm font-bold text-emerald-950">
+                                    BDT {featuredGear.pricePerDay}/day
+                                </div>
+                            )}
                         </div>
-                        <div className="mt-8 grid grid-cols-[1fr_0.7fr] gap-4">
-                            <div className="min-h-48 rounded-md bg-[linear-gradient(160deg,#d9f99d,#34d399_54%,#0f766e)] p-4">
-                                <div className="h-full rounded-md border border-white/30 bg-white/20 p-4 shadow-inner">
-                                    <div className="h-28 rounded-md bg-white/75" />
-                                    <div className="mt-4 h-3 w-24 rounded-full bg-white/70" />
-                                    <div className="mt-2 h-3 w-32 rounded-full bg-white/45" />
+
+                        <div className="mt-8 grid gap-4 sm:grid-cols-[1fr_0.72fr]">
+                            <div className="relative min-h-56 overflow-hidden rounded-md border border-white/20 bg-emerald-900/40">
+                                {featuredGear?.image ? (
+                                    <Image
+                                        src={featuredGear.image}
+                                        alt={featuredGear.title}
+                                        fill
+                                        sizes="(min-width: 768px) 420px, 100vw"
+                                        className="object-cover"
+                                        priority
+                                    />
+                                ) : (
+                                    <div className="flex h-full min-h-56 items-center justify-center bg-emerald-500/10">
+                                        <PackageCheck className="size-20 text-emerald-200" strokeWidth={1.4} />
+                                    </div>
+                                )}
+                                <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-emerald-950/90 to-transparent p-4">
+                                    <p className="text-xs font-semibold uppercase text-emerald-100/80">
+                                        {categoryName}
+                                    </p>
+                                    <p className="mt-1 line-clamp-2 text-sm text-emerald-50">
+                                        {featuredGear?.description || "Providers are preparing fresh rental gear for the marketplace."}
+                                    </p>
                                 </div>
                             </div>
-                            <div className="space-y-3">
-                                {[
-                                    { icon: ShieldCheck, text: "Verified provider" },
-                                    { icon: CalendarCheck, text: "Jul 31 available" },
-                                    { icon: Star, text: "4.9 rating" },
-                                ].map((item) => {
+
+                            <div className="flex flex-col gap-3">
+                                {featureTiles.map((item) => {
                                     const Icon = item.icon;
                                     return (
                                         <div key={item.text} className="rounded-md bg-white/10 p-3 text-sm">
@@ -71,6 +119,14 @@ const Hero = () => {
                                         </div>
                                     );
                                 })}
+
+                                <Link
+                                    href={featuredGear ? `/gear/${featuredGear.id}` : "/gear"}
+                                    className="mt-auto inline-flex h-10 items-center justify-center gap-2 rounded-md bg-emerald-300 px-4 text-sm font-bold text-emerald-950 transition-colors hover:bg-emerald-200"
+                                >
+                                    {featuredGear ? "View details" : "Explore gear"}
+                                    <ArrowRight className="size-4" />
+                                </Link>
                             </div>
                         </div>
                     </div>

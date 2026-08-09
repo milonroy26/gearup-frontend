@@ -1,6 +1,10 @@
+import { DashboardBarChart, DashboardLineChart, DashboardPieChart } from "@/components/shared/charts/DashboardCharts";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getAdminDashboardMetrics } from "@/features/admin/actions/admin.action";
+import { getAdminAllRentals, getAdminDashboardMetrics } from "@/features/admin/actions/admin.action";
+import { IPaginatedData } from "@/features/admin/types/admin.type";
+import { buildMetricChartData, buildOrderActivityChartData, buildStatusChartData } from "@/lib/dashboard-chart-data";
+import { IRentalOrder } from "@/types";
 import { ClipboardList, PackageSearch, Users, WalletCards } from "lucide-react";
 import Link from "next/link";
 
@@ -8,9 +12,20 @@ function formatCurrency(value?: number) {
     return `BDT ${Number(value || 0).toLocaleString("en-US")}`;
 }
 
+function extractItems<T>(data: T[] | IPaginatedData<T> | { data?: T[] } | null | undefined) {
+    if (Array.isArray(data)) return data;
+    if (data && "items" in data && Array.isArray(data.items)) return data.items;
+    if (data && "data" in data && Array.isArray(data.data)) return data.data;
+    return [];
+}
+
 export default async function AdminDashboardPage() {
-    const res = await getAdminDashboardMetrics();
+    const [res, rentalsRes] = await Promise.all([
+        getAdminDashboardMetrics(),
+        getAdminAllRentals(),
+    ]);
     const summary = res.data?.summary;
+    const rentals = extractItems<IRentalOrder>(rentalsRes.data);
 
     const totalUsers = summary?.totalUsers ?? summary?.totalCustomers ?? 0;
     const activeGear = summary?.activeGear ?? summary?.totalProducts ?? 0;
@@ -22,6 +37,12 @@ export default async function AdminDashboardPage() {
         { label: "Total Rentals", value: totalRentals, icon: ClipboardList, tone: "text-purple-600 dark:text-purple-300" },
         { label: "Revenue", value: formatCurrency(summary?.totalRevenue), icon: WalletCards, tone: "text-amber-600 dark:text-amber-300" },
     ];
+    const metricChartData = buildMetricChartData([
+        { label: "Users", value: totalUsers },
+        { label: "Gear", value: activeGear },
+        { label: "Rentals", value: totalRentals },
+        { label: "Revenue (k)", value: Math.round((summary?.totalRevenue || 0) / 1000) },
+    ]);
 
     return (
         <section className="px-4 py-8 sm:px-6 lg:px-8">
@@ -65,6 +86,25 @@ export default async function AdminDashboardPage() {
                         );
                     })}
                 </div>
+
+                <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
+                    <DashboardBarChart
+                        title="Platform Metrics"
+                        description="Core marketplace totals from live admin data."
+                        data={metricChartData}
+                    />
+                    <DashboardPieChart
+                        title="Rental Status"
+                        description="Current distribution of rental orders."
+                        data={buildStatusChartData(rentals)}
+                    />
+                </div>
+
+                <DashboardLineChart
+                    title="Rental Activity"
+                    description="Recent rental order volume by date."
+                    data={buildOrderActivityChartData(rentals)}
+                />
 
                 <Card>
                     <CardHeader>

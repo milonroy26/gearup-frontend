@@ -13,6 +13,9 @@ export const createRentalOrder = async (payload: ICreateRentalPayload) => {
       method: "POST",
       body: JSON.stringify(payload),
     })
+
+    revalidatePath("/dashboard/customer/orders");
+
     return res
   } catch (error: any) {
     return {
@@ -73,6 +76,7 @@ export const createReview = async (payload: ICreateReviewPayload) => {
     });
 
     revalidatePath("/dashboard/customer/orders");
+    revalidatePath(`/gear/${payload.gearItemId}`);
 
     return res;
   } catch (error: any) {

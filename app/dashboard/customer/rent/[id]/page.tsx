@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { getSingleGear } from "@/features/gear/action/gear.action";
 import BookingForm from "@/features/rental/components/BookingForm";
 import { ArrowLeft, PackageCheck, ShieldCheck } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -50,8 +51,20 @@ export default async function RentPage({ params }: RentPageProps) {
                             <CardDescription>Review the item before placing the rental.</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-5">
-                            <div className="flex min-h-40 items-center justify-center rounded-md border border-emerald-500/20 bg-emerald-500/10">
-                                <PackageCheck className="size-16 text-emerald-600 dark:text-emerald-300" strokeWidth={1.4} />
+                            <div className="relative aspect-4/3 overflow-hidden rounded-md border border-border bg-muted">
+                                {gear.image ? (
+                                    <Image
+                                        src={gear.image}
+                                        alt={gear.title}
+                                        fill
+                                        sizes="(min-width: 1024px) 380px, 100vw"
+                                        className="object-cover"
+                                    />
+                                ) : (
+                                    <div className="flex h-full items-center justify-center bg-emerald-500/10">
+                                        <PackageCheck className="size-16 text-emerald-600 dark:text-emerald-300" strokeWidth={1.4} />
+                                    </div>
+                                )}
                             </div>
                             <div>
                                 <h2 className="font-heading text-xl font-bold">{gear.title}</h2>

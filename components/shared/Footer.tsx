@@ -40,7 +40,7 @@ const Footer = () => {
                     <div className="mt-4 space-y-3 text-sm text-muted-foreground">
                         <p className="flex items-center gap-2">
                             <Mail className="size-4" strokeWidth={1.8} />
-                            hello@gearup.local
+                            milonchandro35@gmail.com
                         </p>
                         <p className="flex items-center gap-2">
                             <MapPin className="size-4" strokeWidth={1.8} />

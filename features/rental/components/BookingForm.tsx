@@ -66,9 +66,8 @@ export default function BookingForm({ gearId, pricePerDay }: BookingFormProps) {
             });
 
             if (res?.success) {
-                toast.success("Rental order placed successfully");
-                router.push("/dashboard/customer/orders");
-                router.refresh();
+                toast.success("Rental order placed. Redirecting to My Orders...");
+                router.replace("/dashboard/customer/orders");
                 return;
             }
 

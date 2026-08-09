@@ -1,7 +1,9 @@
+import { DashboardBarChart, DashboardPieChart } from "@/components/shared/charts/DashboardCharts";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getProviderGears, getProviderOrders } from "@/features/provider/actions/provider.action";
 import ProviderInventoryTable from "@/features/provider/components/ProviderInventoryTable";
+import { buildMetricChartData, buildStatusChartData } from "@/lib/dashboard-chart-data";
 import { CalendarCheck, ClipboardList, PackagePlus, PackageSearch, Store } from "lucide-react";
 import Link from "next/link";
 
@@ -17,6 +19,12 @@ export default async function ProviderDashboardOverview() {
     const activeRentals = orders.filter((order) => ["CONFIRMED", "PAID", "PICKED_UP"].includes(order.status)).length;
     const pendingOrders = orders.filter((order) => order.status === "PLACED").length;
     const availableGear = gears.filter((gear) => gear.isAvailable && gear.stock > 0).length;
+    const chartMetrics = buildMetricChartData([
+        { label: "Listed", value: totalGearListed },
+        { label: "Available", value: availableGear },
+        { label: "Active", value: activeRentals },
+        { label: "Pending", value: pendingOrders },
+    ]);
 
     return (
         <section className="px-4 py-8 sm:px-6 lg:px-8">
@@ -65,6 +73,25 @@ export default async function ProviderDashboardOverview() {
                         );
                     })}
                 </div>
+
+                <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
+                    <DashboardBarChart
+                        title="Inventory And Orders"
+                        description="Live provider inventory and rental workload."
+                        data={chartMetrics}
+                    />
+                    <DashboardPieChart
+                        title="Order Status"
+                        description="Incoming rental orders by current status."
+                        data={buildStatusChartData(orders)}
+                    />
+                </div>
+
+                {/* <DashboardLineChart
+                    title="Incoming Order Activity"
+                    description="Recent provider rental requests by date."
+                    data={buildOrderActivityChartData(orders)}
+                /> */}
 
                 <Card>
                     <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

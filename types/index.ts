@@ -45,6 +45,21 @@ export interface ICategory {
     updatedAt?: string;
 }
 
+export interface IReview {
+    id: string;
+    rating: number | string;
+    comment: string;
+    customerId?: string;
+    gearItemId?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    customer?: {
+        id?: string;
+        name?: string;
+        email?: string;
+    };
+}
+
 // Order Status Enum
 export type OrderStatus =
     | "PLACED"

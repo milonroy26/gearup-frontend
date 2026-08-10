@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { addProviderGear } from "@/features/provider/actions/provider.action";
 import { IAddGearPayload } from "@/features/provider/types/provider.type";
 import { ICategory } from "@/types";
-import { ArrowLeft, PackagePlus } from "lucide-react";
+import { ArrowLeft, ImageIcon, PackagePlus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -18,6 +18,7 @@ import { toast } from "sonner";
 const initialFormData: IAddGearPayload = {
     title: "",
     description: "",
+    image: "",
     brand: "",
     pricePerDay: 0,
     stock: 1,
@@ -47,12 +48,14 @@ export default function ProviderGearForm({ categories }: { categories: ICategory
         setIsLoading(true);
 
         try {
+            const image = formData.image?.trim();
             const payload: IAddGearPayload = {
                 ...formData,
                 title: formData.title.trim(),
                 brand: formData.brand.trim(),
                 description: formData.description.trim(),
                 categoryId: formData.categoryId.trim(),
+                ...(image ? { image } : { image: undefined }),
             };
             const res = await addProviderGear(payload);
 
@@ -89,7 +92,7 @@ export default function ProviderGearForm({ categories }: { categories: ICategory
                             </span>
                             <div>
                                 <CardTitle>Add new sports gear</CardTitle>
-                                <CardDescription>Publish a gear item customers can rent. Image upload is skipped for now.</CardDescription>
+                                <CardDescription>Publish a gear item customers can rent with a hosted image URL.</CardDescription>
                             </div>
                         </div>
                     </CardHeader>
@@ -117,6 +120,41 @@ export default function ProviderGearForm({ categories }: { categories: ICategory
                                         className="h-11 rounded-md text-sm"
                                         required
                                     />
+                                </div>
+                            </div>
+
+                            <div className="grid gap-4 lg:grid-cols-[1fr_220px]">
+                                <div>
+                                    <label htmlFor="image" className="mb-2 block text-xs font-semibold uppercase text-muted-foreground">Image URL</label>
+                                    <Input
+                                        id="image"
+                                        type="url"
+                                        value={formData.image || ""}
+                                        onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                                        placeholder="https://images.unsplash.com/..."
+                                        className="h-11 rounded-md text-sm"
+                                    />
+                                    <p className="mt-2 text-xs text-muted-foreground">
+                                        Paste a direct image URL. This image will appear on listings and details pages.
+                                    </p>
+                                </div>
+
+                                <div className="overflow-hidden rounded-md border border-border bg-muted/40">
+                                    {formData.image?.trim() ? (
+                                        // eslint-disable-next-line @next/next/no-img-element
+                                        <img
+                                            src={formData.image.trim()}
+                                            alt="Gear preview"
+                                            className="aspect-4/3 h-full min-h-36 w-full object-cover"
+                                        />
+                                    ) : (
+                                        <div className="flex aspect-4/3 min-h-36 flex-col items-center justify-center gap-2 text-center text-muted-foreground">
+                                            <ImageIcon className="size-8" strokeWidth={1.7} />
+                                            <span className="px-4 text-xs font-medium">
+                                                Image preview
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 

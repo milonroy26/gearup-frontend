@@ -1,5 +1,5 @@
 import { IGearItem } from "@/types";
-import { ArrowUpRight, PackageCheck, PackageX } from "lucide-react";
+import { ArrowUpRight, CalendarCheck, PackageCheck, PackageX } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -14,7 +14,11 @@ export default function GearCard({ gear }: GearCardProps) {
     return (
         <article className="group flex min-h-72 flex-col justify-between overflow-hidden border border-border bg-card text-card-foreground shadow-sm transition-colors hover:border-emerald-500/45 dark:hover:border-emerald-300/45">
             <div>
-                <div className="relative aspect-4/3 overflow-hidden border-b border-border bg-muted">
+                <Link
+                    href={`/gear/${gear.id}`}
+                    aria-label={`View details for ${gear.title}`}
+                    className="relative block aspect-4/3 overflow-hidden border-b border-border bg-muted"
+                >
                     {gear.image ? (
                         <Image
                             src={gear.image}
@@ -51,20 +55,20 @@ export default function GearCard({ gear }: GearCardProps) {
                             </span>
                         )}
                     </div>
-                </div>
+                </Link>
 
-                <div className="p-5">
+                <div className="p-4">
                     <h3 className="font-heading text-xl font-bold tracking-normal transition-colors group-hover:text-emerald-600 dark:group-hover:text-emerald-300">
                         {gear.title}
                     </h3>
-                    <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">
+                    <p className="mt-2 line-clamp-3 text-sm leading-5 text-muted-foreground">
                         {gear.description}
                     </p>
                 </div>
             </div>
 
-            <div className="mx-5 mb-5 mt-3 border-t border-border pt-4">
-                <div className="mb-4 flex items-center justify-between gap-3">
+            <div className="mx-4 mb-4 mt-2 border-t border-border pt-3">
+                <div className="mb-3 flex items-center justify-between gap-3">
                     <span
                         className={`text-xs font-semibold uppercase tracking-normal ${isAvailable ? "text-emerald-600 dark:text-emerald-300" : "text-red-500 dark:text-red-300"
                             }`}
@@ -79,13 +83,26 @@ export default function GearCard({ gear }: GearCardProps) {
                     </div>
                 </div>
 
-                <Link
-                    href={`/gear/${gear.id}`}
-                    className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md bg-emerald-400 px-4 text-sm font-bold text-emerald-950 transition-colors hover:bg-emerald-300"
-                >
-                    View Details
-                    <ArrowUpRight className="size-4" />
-                </Link>
+                <div className="grid grid-cols-2 gap-2">
+                    <Link
+                        href={`/gear/${gear.id}`}
+                        className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-background px-3 text-sm font-bold text-foreground transition-colors hover:bg-muted"
+                    >
+                        Details
+                        <ArrowUpRight className="size-4" />
+                    </Link>
+                    <Link
+                        href={`/dashboard/customer/rent/${gear.id}`}
+                        className={`inline-flex h-10 items-center justify-center gap-2 rounded-md px-3 text-sm font-bold transition-colors ${isAvailable
+                            ? "bg-emerald-400 text-emerald-950 hover:bg-emerald-300"
+                            : "pointer-events-none bg-muted text-muted-foreground"
+                            }`}
+                        aria-disabled={!isAvailable}
+                    >
+                        <CalendarCheck className="size-4" />
+                        {isAvailable ? "Rent" : "Unavailable"}
+                    </Link>
+                </div>
             </div>
         </article>
     );

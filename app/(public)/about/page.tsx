@@ -1,33 +1,16 @@
 import { Button } from "@/components/ui/button";
+import Ourmission from "@/features/home/components/Ourmission";
 import {
     ArrowRight,
     Backpack,
     CalendarCheck,
-    CircleDollarSign,
     Handshake,
     ShieldCheck,
     Star,
-    Users,
+    Users
 } from "lucide-react";
 import Link from "next/link";
 
-const missionItems = [
-    {
-        icon: Backpack,
-        title: "Access without ownership",
-        body: "Players can get match-ready equipment for a weekend, a practice block, or a short trip without buying gear they rarely use.",
-    },
-    {
-        icon: CircleDollarSign,
-        title: "More value from every kit",
-        body: "Providers can keep useful gear earning between games while renters pay only for the days they need.",
-    },
-    {
-        icon: ShieldCheck,
-        title: "A clearer rental record",
-        body: "Bookings, payments, returns, and reviews stay connected so both sides know exactly what happened.",
-    },
-];
 
 const audiences = [
     {
@@ -120,30 +103,7 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            <section className="py-16">
-                <div className="mx-auto max-w-7xl px-5 lg:px-8">
-                    <p className="mb-3 text-xs font-semibold uppercase text-emerald-700 dark:text-emerald-300">
-                        Our mission
-                    </p>
-                    <h2 className="max-w-2xl font-heading text-3xl font-bold md:text-4xl">
-                        Make sports gear easier to access, easier to trust, and easier to share.
-                    </h2>
-                    <div className="mt-9 grid gap-5 md:grid-cols-3">
-                        {missionItems.map((item) => {
-                            const Icon = item.icon;
-                            return (
-                                <div key={item.title} className="border border-border bg-card p-6 shadow-sm">
-                                    <div className="flex size-12 items-center justify-center rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-300">
-                                        <Icon className="size-6" strokeWidth={1.8} />
-                                    </div>
-                                    <h3 className="mt-5 font-heading text-lg font-bold">{item.title}</h3>
-                                    <p className="mt-3 text-sm leading-6 text-muted-foreground">{item.body}</p>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            </section>
+            <Ourmission />
 
             <section className="border-y border-border bg-slate-50 py-16 dark:bg-[#111827]">
                 <div className="mx-auto max-w-7xl px-5 lg:px-8">
